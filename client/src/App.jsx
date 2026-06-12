@@ -19,7 +19,9 @@ function AppContent() {
   const location = useLocation();
   const { loggedIn } = useAuth();
 
-  const hideNavbar = location.pathname === '/' && !loggedIn;
+  const hideNavbar =
+  (location.pathname === '/' && !loggedIn) ||
+  location.pathname === '/login';
 
   return (
     <>

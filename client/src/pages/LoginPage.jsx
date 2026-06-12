@@ -1,18 +1,19 @@
 import { useState } from 'react';
-import { Alert, Button, Card, Form } from 'react-bootstrap';
-import { Navigate, useNavigate } from 'react-router';
+import { Alert, Button, Form } from 'react-bootstrap';
+import { Navigate, useNavigate, Link } from 'react-router';
+import { FiChevronLeft } from 'react-icons/fi';
 
 import useAuth from '../hooks/useAuth.js';
 
 function LoginPage() {
-  const { login, loggedIn, checkingAuth } = useAuth();
-  const navigate = useNavigate();
+      const { login, loggedIn, checkingAuth } = useAuth();
+      const navigate = useNavigate();
 
   const [username, setUsername] = useState('alice');
   const [password, setPassword] = useState('password');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
+ 
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -39,52 +40,71 @@ function LoginPage() {
   }
 
   return (
-    <>
-      <h1>Login</h1>
+    <div className="login-page">
+      <div className="login-bg-lines"></div>
 
-      <Card>
-        <Card.Body>
-          <Card.Title>Access Last Race</Card.Title>
-          <Card.Text>
-            Use one of the provided test accounts to start a game.
-          </Card.Text>
+      <main className="login-card">
 
-          {error && <Alert variant="danger">{error}</Alert>}
+<Button
+  as={Link}
+  to="/"
+  className="login-back-button"
+>
+  <FiChevronLeft size={22} />
+</Button>
 
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Username</Form.Label>
-              <Form.Control
-                value={username}
-                onChange={(event) => {
+        <h1>Last Race</h1>
+        <p className="login-subtitle">Welcome back, traveler</p>
+
+        <div className="login-train">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        {error && <Alert variant="danger" className="login-error">{error}</Alert>}
+
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-4">
+            <Form.Label>USERNAME</Form.Label>
+            <Form.Control
+              className="login-input"
+              value={username}
+              onChange={(event) => {
   setUsername(event.target.value);
   setError('');
 }}
-                disabled={submitting}
-              />
-            </Form.Group>
+              placeholder="Enter your username"
+              autoFocus
+              disabled={submitting}
+            />
+          </Form.Group>
 
-            <Form.Group className="mb-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(event) => {
+          <Form.Group className="mb-4">
+            <Form.Label>PASSWORD</Form.Label>
+            <Form.Control
+              className="login-input"
+              type="password"
+              value={password}
+              onChange={(event) => {
   setPassword(event.target.value);
   setError('');
 }
 }
-                disabled={submitting}
-              />
-            </Form.Group>
+               placeholder="Enter your password"
+               disabled={submitting}
+            />
+          </Form.Group>
 
-            <Button type="submit" disabled={submitting}>
-              {submitting ? 'Logging in...' : 'Login'}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </>
+          <Button type="submit"
+            className="login-submit-button"
+            disabled={submitting}
+          >
+            {submitting ? 'Signing in...' : 'Sign In'}
+          </Button>
+        </Form>
+      </main>
+    </div>
   );
 }
 

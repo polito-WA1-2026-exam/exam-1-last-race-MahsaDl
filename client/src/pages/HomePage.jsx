@@ -1,7 +1,6 @@
 import { Link } from 'react-router';
 import { Button, Card, Col, Row } from 'react-bootstrap';
 
-//import { useAuth } from '../contexts/AuthContext.jsx';
 import useAuth from '../hooks/useAuth.js';
 
 function HomePage() {

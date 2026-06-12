@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Alert, Button, Card, Form } from 'react-bootstrap';
 import { Navigate, useNavigate } from 'react-router';
 
-//import { useAuth } from '../contexts/AuthContext.jsx';
 import useAuth from '../hooks/useAuth.js';
 
 function LoginPage() {

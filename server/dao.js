@@ -113,13 +113,22 @@ export async function createGame(userId) {
     }
   }
 
-  const result = await dbRun(
-    `
-    INSERT INTO games(user_id, start_station_id, destination_station_id, score, completed, created_at)
-    VALUES (?, ?, ?, NULL, 0, ?)
-    `,
-    [userId, start, destination, dayjs().toISOString()]
-  );
+const result = await dbRun(
+  `
+  INSERT INTO games(
+    user_id,
+    start_station_id,
+    destination_station_id,
+    score,
+    completed,
+    valid,
+    failure_reason,
+    created_at
+  )
+  VALUES (?, ?, ?, NULL, 0, NULL, NULL, ?)
+  `,
+  [userId, start, destination, dayjs().toISOString()]
+);
 
   return getGame(result.lastID);
 }
@@ -415,6 +424,7 @@ export async function getRanking() {
     FROM games g
     JOIN users u ON g.user_id = u.id
     WHERE g.completed = 1
+      AND g.valid = 1
     GROUP BY g.user_id
     ORDER BY bestScore DESC, u.username ASC
   `);

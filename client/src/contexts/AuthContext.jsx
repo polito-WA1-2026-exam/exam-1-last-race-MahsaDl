@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import API from '../api/API.js';
 import AuthContext from './AuthContextObject.js';
-//mahsa bedone export bud
-//export const AuthContext = createContext();
 
 function AuthProvider({ children }) {
   const [user, setUser] = useState(null);

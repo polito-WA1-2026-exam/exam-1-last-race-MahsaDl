@@ -44,36 +44,36 @@ function ResultPage() {
       <h1>Game Result</h1>
 
       <Card className="mb-3">
-  <Card.Body>
-    <Card.Title>
-      {game.startStationName} → {game.destinationStationName}
-    </Card.Title>
+        <Card.Body>
+          <Card.Title>
+            {game.startStationName} → {game.destinationStationName}
+          </Card.Title>
 
-    <Card.Text>
-      Final score: <strong>{game.score}</strong>
-    </Card.Text>
+          <Card.Text>
+            Final score: <strong>{game.score}</strong>
+          </Card.Text>
 
-    <Card.Text>
-      Status:{' '}
-      <strong>
-        {game.completed ? 'Completed' : 'Not completed'}
-      </strong>
-    </Card.Text>
+          <Card.Text>
+            Status:{' '}
+            <strong>
+              {game.completed ? 'Completed' : 'Not completed'}
+            </strong>
+          </Card.Text>
 
-    <Card.Text>
-      Route validity:{' '}
-      <strong>
-        {game.valid ? 'Valid route' : 'Invalid route'}
-      </strong>
-    </Card.Text>
+          <Card.Text>
+            Route validity:{' '}
+            <strong>
+              {game.valid ? 'Valid route' : 'Invalid route'}
+            </strong>
+          </Card.Text>
 
-    {!game.valid && game.failureReason && (
-      <Alert variant="danger">
-        Reason: {game.failureReason}
-      </Alert>
-    )}
-  </Card.Body>
-</Card>
+          {!game.valid && game.failureReason && (
+            <Alert variant="danger">
+              Reason: {game.failureReason}
+            </Alert>
+          )}
+        </Card.Body>
+      </Card>
 
       <h2>Travelled segments</h2>
 
@@ -85,25 +85,27 @@ function ResultPage() {
         <ListGroup className="mb-3">
           {game.travelledSegments.map((segment) => (
             <ListGroup.Item key={segment.sequenceNumber}>
-  <strong>Step {segment.sequenceNumber}</strong>
-  <br />
+              <strong>Step {segment.sequenceNumber}</strong>
+              <br />
 
-  {segment.station1Name} ↔ {segment.station2Name}
-  <br />
+              {segment.station1Name} ↔ {segment.station2Name}
+              <br />
 
-  <span style={{ color: segment.lineColor }}>
-    {segment.lineName}
-  </span>
-  <br />
+              <span style={{ color: segment.lineColor }}>
+                {segment.lineName}
+              </span>
+              <br />
 
-  Event: {segment.eventDescription}
-  <br />
+              Event: {segment.eventDescription}
+              <br />
 
-  Coin effect:{' '}
-  <strong>
-    {segment.coinEffect > 0 ? `+${segment.coinEffect}` : segment.coinEffect}
-  </strong>
-</ListGroup.Item>
+              Coin effect:{' '}
+              <strong>
+                {segment.coinEffect > 0
+                  ? `+${segment.coinEffect}`
+                  : segment.coinEffect}
+              </strong>
+            </ListGroup.Item>
           ))}
         </ListGroup>
       )}

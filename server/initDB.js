@@ -152,13 +152,27 @@ CREATE TABLE games (
     db.run(`INSERT INTO events(description, coin_effect) VALUES (?, ?)`, e);
   }
 
-  const segments = [
-    [1, 2, 1], [2, 3, 1], [3, 4, 1],
-    [1, 5, 2], [5, 6, 2], [6, 7, 2],
-    [2, 5, 3], [5, 8, 3], [8, 9, 3],
-    [4, 8, 4], [8, 7, 4], [7, 9, 4],
-    [10, 1, 2], [11, 6, 3], [12, 9, 4]
-  ];
+const segments = [
+  // Red Line: Centrale - Porta Valeria - Crocevia del Falco - Piazza delle Lanterne
+  [1, 2, 1],
+  [2, 3, 1],
+  [3, 4, 1],
+
+  // Blue Line: Centrale - Fontana Oscura - Borgo Sereno - Viale dei Mosaici
+  [1, 5, 2],
+  [5, 6, 2],
+  [6, 7, 2],
+
+  // Green Line: Porta Valeria - Mercato Vecchio - Torre Cinerea - Campo dell'Eco
+  [2, 11, 3],
+  [11, 8, 3],
+  [8, 9, 3],
+
+  // Yellow Line: Piazza delle Lanterne - Porto Sud - Torre Cinerea - Giardino Nord
+  [4, 12, 4],
+  [12, 8, 4],
+  [8, 10, 4]
+];
 
   for (const seg of segments) {
     db.run(
@@ -166,6 +180,33 @@ CREATE TABLE games (
       seg
     );
   }
+
+const completedGames = [
+  [1,1,4,23,1,1,null,new Date().toISOString()],
+  [1,2,7,19,1,1,null,new Date().toISOString()],
+
+  [2,1,7,18,1,1,null,new Date().toISOString()],
+  [2,5,9,21,1,1,null,new Date().toISOString()]
+];
+
+for (const game of completedGames) {
+  db.run(
+    `
+    INSERT INTO games(
+      user_id,
+      start_station_id,
+      destination_station_id,
+      score,
+      completed,
+      valid,
+      failure_reason,
+      created_at
+    )
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `,
+    game
+  );
+}
 
   console.log('Database initialized.');
 });

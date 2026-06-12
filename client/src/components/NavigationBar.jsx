@@ -1,7 +1,6 @@
 import { Link, NavLink, useNavigate } from 'react-router';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 
-//import { useAuth } from '../contexts/AuthContext.jsx';
 import useAuth from '../hooks/useAuth.js';
 
 function NavigationBar() {

@@ -104,7 +104,7 @@ app.delete('/api/sessions/current', (req, res) => {
   });
 });
 
-// ---------- PUBLIC APIs ----------
+// ---------- PROTECTED DATA APIs ----------
 
 app.get('/api/network', isLoggedIn, async (req, res) => {
   try {

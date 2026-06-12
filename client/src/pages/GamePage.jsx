@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Alert, Button, Col, ListGroup, Row, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
-import NetworkMap from '../components/NetworkMap.jsx';
 
 import API from '../api/API.js';
+import NetworkMap from '../components/NetworkMap.jsx';
 import SegmentCard from '../components/SegmentCard.jsx';
 import Timer from '../components/Timer.jsx';
 
@@ -16,23 +16,46 @@ function GamePage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const [timeExpired, setTimeExpired] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [phase, setPhase] = useState('setup');
   const [timerKey, setTimerKey] = useState(0);
 
-useEffect(() => {
-  async function initializeGame() {
+  useEffect(() => {
+    async function initializeGame() {
+      setLoading(true);
+      setError('');
+      setSelectedSegments([]);
+      setSubmitted(false);
+      setPhase('setup');
+
+      try {
+        const [networkData, gameData] = await Promise.all([
+          API.getNetwork(),
+          API.startGame()
+        ]);
+
+        setNetwork(networkData);
+        setGame(gameData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    initializeGame();
+  }, []);
+
+  async function startNewGame() {
     setLoading(true);
     setError('');
     setSelectedSegments([]);
-    setTimeExpired(false);
+    setSubmitted(false);
+    setPhase('setup');
+    setTimerKey((key) => key + 1);
 
     try {
-      const [networkData, gameData] = await Promise.all([
-        API.getNetwork(),
-        API.startGame()
-      ]);
-
-      setNetwork(networkData);
+      const gameData = await API.startGame();
       setGame(gameData);
     } catch (err) {
       setError(err.message);
@@ -41,28 +64,19 @@ useEffect(() => {
     }
   }
 
-  initializeGame();
-}, []);
-
-
-async function startNewGame() {
-  setLoading(true);
-  setError('');
-  setSelectedSegments([]);
-  setTimeExpired(false);
-  setTimerKey((key) => key + 1);
-
-  try {
-    const gameData = await API.startGame();
-    setGame(gameData);
-  } catch (err) {
-    setError(err.message);
-  } finally {
-    setLoading(false);
+  function startPlanning() {
+    setError('');
+    setSelectedSegments([]);
+    setSubmitted(false);
+    setPhase('planning');
+    setTimerKey((key) => key + 1);
   }
-}
 
   function toggleSegment(segmentId) {
+    if (phase !== 'planning' || submitted) {
+      return;
+    }
+
     setSelectedSegments((oldSegments) => {
       if (oldSegments.includes(segmentId)) {
         return oldSegments.filter((id) => id !== segmentId);
@@ -77,37 +91,37 @@ async function startNewGame() {
     setError('');
   }
 
-  function handleTimeExpired() {
-    setTimeExpired(true);
-    setError('Time expired. You cannot submit this route anymore.');
-  }
-
-  async function handleSubmit() {
-    if (!game) {
-      return;
-    }
-
-    if (timeExpired) {
-      setError('Time expired. Start a new game.');
-      return;
-    }
-
-    if (selectedSegments.length === 0) {
-      setError('Select at least one segment.');
+  async function submitCurrentRoute() {
+    if (!game || submitted) {
       return;
     }
 
     setSubmitting(true);
+    setSubmitted(true);
     setError('');
 
     try {
       await API.submitGameRoute(game.id, selectedSegments);
       navigate(`/result/${game.id}`);
     } catch (err) {
+      setSubmitted(false);
       setError(err.message);
     } finally {
       setSubmitting(false);
     }
+  }
+
+  async function handleSubmit() {
+    if (selectedSegments.length === 0) {
+      setError('Select at least one segment.');
+      return;
+    }
+
+    await submitCurrentRoute();
+  }
+
+  async function handleTimeExpired() {
+    await submitCurrentRoute();
   }
 
   function getSegmentById(segmentId) {
@@ -129,17 +143,14 @@ async function startNewGame() {
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h1>Game</h1>
-
 <Button
+  className="mb-3"
   variant="outline-primary"
   onClick={startNewGame}
   disabled={submitting}
 >
   Start new game
 </Button>
-      </div>
 
       {error && <Alert variant="danger">{error}</Alert>}
 
@@ -150,78 +161,110 @@ async function startNewGame() {
         </Alert>
       )}
 
-      <Timer
-        key={timerKey}
-        initialSeconds={60}
-        stopped={submitting || timeExpired}
-        onTimeExpired={handleTimeExpired}
-      />
+      {phase === 'setup' && (
+        <>
+          <Alert variant="secondary">
+            Setup phase: study the full underground network before starting the
+            timed planning phase.
+          </Alert>
 
-      {network && <NetworkMap network={network} />}
+          <NetworkMap network={network} showLines />
 
-      <Row>
-        <Col md={7}>
-          <h2>Available segments</h2>
-
-          {network.segments.map((segment) => (
-            <SegmentCard
-              key={segment.id}
-              segment={segment}
-              selected={selectedSegments.includes(segment.id)}
-              onToggle={toggleSegment}
-            />
-          ))}
-        </Col>
-
-        <Col md={5}>
-          <div className="d-flex justify-content-between align-items-center">
-            <h2>Your route</h2>
-
-            <Button
-              variant="outline-secondary"
-              size="sm"
-              onClick={clearRoute}
-              disabled={selectedSegments.length === 0 || submitting}
-            >
-              Clear route
-            </Button>
-          </div>
-
-          {selectedSegments.length === 0 ? (
-            <p>No segment selected yet.</p>
-          ) : (
-            <ListGroup as="ol" numbered>
-              {selectedSegments.map((id) => {
-                const segment = getSegmentById(id);
-
-                return (
-                  <ListGroup.Item as="li" key={id}>
-                    <strong>
-                      {segment.station1Name} ↔ {segment.station2Name}
-                    </strong>
-                    <br />
-                    <small style={{ color: segment.lineColor }}>
-                      {segment.lineName}
-                    </small>
-                  </ListGroup.Item>
-                );
-              })}
-            </ListGroup>
-          )}
-
-          <p className="mt-3">
-            Selected segments: <strong>{selectedSegments.length}</strong>
-          </p>
-
-          <Button
-            className="mt-2"
-            onClick={handleSubmit}
-            disabled={submitting || timeExpired}
-          >
-            {submitting ? 'Submitting...' : 'Submit route'}
+          <Button onClick={startPlanning}>
+            Ready - start planning
           </Button>
-        </Col>
-      </Row>
+        </>
+      )}
+
+      {phase === 'planning' && (
+        <>
+          <Alert variant="warning">
+            Planning phase: select the ordered sequence of segments. The map now
+            shows only stations, while the segment list is used to build the
+            route.
+          </Alert>
+
+          <Timer
+            key={timerKey}
+            initialSeconds={90}
+            stopped={submitting || submitted}
+            onTimeExpired={handleTimeExpired}
+          />
+
+          <NetworkMap network={network} showLines={false} />
+
+          <Row>
+            <Col md={7}>
+              <h2>Available segments</h2>
+
+              {network.segments.map((segment) => (
+                <SegmentCard
+                  key={segment.id}
+                  segment={segment}
+                  selected={selectedSegments.includes(segment.id)}
+                  onToggle={toggleSegment}
+                />
+              ))}
+            </Col>
+
+            <Col
+  md={5}
+  style={{
+    position: 'sticky',
+    top: '90px',
+    alignSelf: 'flex-start'
+  }}
+>
+              <div className="d-flex justify-content-between align-items-center">
+                <h2>Your route</h2>
+
+                <Button
+                  variant="outline-secondary"
+                  size="sm"
+                  onClick={clearRoute}
+                  disabled={
+                    selectedSegments.length === 0 ||
+                    submitting ||
+                    submitted
+                  }
+                >
+                  Clear route
+                </Button>
+              </div>
+
+              {selectedSegments.length === 0 ? (
+                <p>No segment selected yet.</p>
+              ) : (
+                <ListGroup as="ol" numbered>
+                  {selectedSegments.map((id) => {
+                    const segment = getSegmentById(id);
+
+                    return (
+                      <ListGroup.Item as="li" key={id}>
+                        <strong>
+                          {segment.station1Name} ↔ {segment.station2Name}
+                        </strong>
+                      </ListGroup.Item>
+                    );
+                  })}
+                </ListGroup>
+              )}
+
+              <p className="mt-3">
+                Selected segments: <strong>{selectedSegments.length}</strong>
+              </p>
+
+              <Button
+                className="mt-2"
+                onClick={handleSubmit}
+                disabled={submitting || submitted}
+              >
+                {submitting ? 'Submitting...' : 'Submit route'}
+              </Button>
+            </Col>
+          </Row>
+        </>
+      )}
     </>
   );
 }

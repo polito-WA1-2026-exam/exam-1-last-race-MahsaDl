@@ -8,10 +8,6 @@ function SegmentCard({ segment, selected, onToggle }) {
           <strong>{segment.station1Name}</strong>
           {' ↔ '}
           <strong>{segment.station2Name}</strong>
-          <br />
-          <small style={{ color: segment.lineColor }}>
-            {segment.lineName}
-          </small>
         </div>
 
         <Button

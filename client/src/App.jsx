@@ -1,7 +1,9 @@
-import { Routes, Route, Navigate } from 'react-router';
+import { Routes, Route, Navigate, useLocation } from 'react-router';
 import { Container } from 'react-bootstrap';
 
 import { AuthProvider } from './contexts/AuthContext.jsx';
+import useAuth from './hooks/useAuth.js';
+
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import NavigationBar from './components/NavigationBar.jsx';
 
@@ -13,11 +15,17 @@ import RankingPage from './pages/RankingPage.jsx';
 
 import './App.css';
 
-function App() {
+function AppContent() {
+  const location = useLocation();
+  const { loggedIn } = useAuth();
+
+  const hideNavbar = location.pathname === '/' && !loggedIn;
+
   return (
-    <AuthProvider>
-     <NavigationBar />
-      <Container className="py-4">
+    <>
+      {!hideNavbar && <NavigationBar />}
+
+      <Container fluid={hideNavbar} className={hideNavbar ? 'p-0' : 'py-4'}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -52,6 +60,14 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Container>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
     </AuthProvider>
   );
 }

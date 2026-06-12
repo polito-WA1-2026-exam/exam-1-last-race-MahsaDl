@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import { Button, Card, Col, Row } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import useAuth from '../hooks/useAuth.js';
 
@@ -7,87 +7,86 @@ function HomePage() {
   const { loggedIn, user, logout } = useAuth();
 
   return (
-    <>
-      <h1>Last Race</h1>
+    <div className="home-landing">
+      <div className="home-bg-lines"></div>
 
-      <Card className="mb-4">
-        <Card.Body>
-          <Card.Title>Game instructions</Card.Title>
+      <main className="home-panel">
+        <h1>Last Race</h1>
 
-          <Card.Text>
-            Last Race is a route-planning game. The player receives a random
-            start station and a random destination station, then selects a
-            sequence of network segments to reach the destination before time
-            expires.
-          </Card.Text>
+        <p className="home-subtitle">
+          Build the fastest route before the clock runs out.
+        </p>
 
-          <Card.Text>
-            The server validates the selected route, applies random events to
-            the travelled segments, computes the final score, and updates the
-            ranking.
-          </Card.Text>
-        </Card.Body>
-      </Card>
+<div className="mini-map">
+  <span className="map-label start-label">START</span>
+  <span className="map-label destination-label">DESTINATION</span>
 
-      <Row>
-        <Col md={6}>
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Authentication</Card.Title>
+<div className="route-line red-line"></div>
 
-              {loggedIn ? (
-                <>
-                  <Card.Text>
-                    Logged in as <strong>{user.username}</strong>.
-                  </Card.Text>
+<div className="route-line blue-horz"></div>
+<div className="route-line blue-vert"></div>
 
-                  <Button as={Link} to="/game" className="me-2">
-                    Start game
-                  </Button>
 
-                  <Button
-                    variant="outline-danger"
-                    onClick={logout}
-                  >
-                    Logout
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Card.Text>
-                    Anonymous users can read the instructions. Login is required
-                    to play and access the ranking.
-                  </Card.Text>
+<div className="route-line green-top"></div>
+<div className="route-line green-down"></div>
+<div className="route-line green-diag"></div>
 
-                  <Button as={Link} to="/login">
-                    Login
-                  </Button>
-                </>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
+<div className="route-line yellow-vert"></div>
+<div className="route-line yellow-horz"></div>
 
-        <Col md={6}>
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Ranking</Card.Title>
+  <span className="map-station p1"></span>
+  <span className="map-station p2 hot"></span>
+  <span className="map-station p3"></span>
+  <span className="map-station p4 hot"></span>
+  <span className="map-station p5"></span>
+  <span className="map-station p6"></span>
+  <span className="map-station p7"></span>
+  <span className="map-station p8"></span>
+  <span className="map-station p9"></span>
+  <span className="map-station p10"></span>
+</div>
 
-              <Card.Text>
-                Registered users can view the best score achieved by each
-                player.
-              </Card.Text>
+        <section className="home-steps">
+          <div>
+            <span>1</span>
+            <strong>Setup</strong>
+            <small>study the network</small>
+          </div>
 
-              {loggedIn && (
-                <Button as={Link} to="/ranking" variant="secondary">
-                  View ranking
-                </Button>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </>
+          <div>
+            <span>2</span>
+            <strong>Planning</strong>
+            <small>90 seconds</small>
+          </div>
+
+          <div>
+            <span>3</span>
+            <strong>Result</strong>
+            <small>events + ranking</small>
+          </div>
+        </section>
+
+        {loggedIn ? (
+          <>
+            <p className="home-user">
+              Signed in as <strong>{user.username}</strong>
+            </p>
+
+            <Button as={Link} to="/game" className="home-main-button">
+              Start Game
+            </Button>
+
+            <Button variant="link" onClick={logout} className="home-link-button">
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Button as={Link} to="/login" className="home-main-button">
+            Login to Play
+          </Button>
+        )}
+      </main>
+    </div>
   );
 }
 

@@ -46,23 +46,6 @@ function GamePage() {
     initializeGame();
   }, []);
 
-  async function startNewGame() {
-    setLoading(true);
-    setError('');
-    setSelectedSegments([]);
-    setSubmitted(false);
-    setPhase('setup');
-    setTimerKey((key) => key + 1);
-
-    try {
-      const gameData = await API.startGame();
-      setGame(gameData);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
 
   function startPlanning() {
     setError('');
@@ -143,36 +126,28 @@ function GamePage() {
 
   return (
     <>
-<Button
-  className="mb-3"
-  variant="outline-primary"
-  onClick={startNewGame}
-  disabled={submitting}
->
-  Start new game
-</Button>
 
       {error && <Alert variant="danger">{error}</Alert>}
 
-      {game && (
-        <Alert variant="info">
-          Start from <strong>{game.startStationName}</strong> and reach{' '}
-          <strong>{game.destinationStationName}</strong>.
-        </Alert>
-      )}
 
       {phase === 'setup' && (
         <>
-          <Alert variant="secondary">
-            Setup phase: study the full underground network before starting the
-            timed planning phase.
-          </Alert>
+          <div className="setup-header">
+            <div>
+              <h2>SETUP PHASE</h2>
+              <p>Study the network map before you begin</p>
+            </div>
 
-          <NetworkMap network={network} showLines />
+            <div className="coins-pill">
+              🪙 Starting coins: <strong>20</strong>
+            </div>
+          </div>
 
-          <Button onClick={startPlanning}>
-            Ready - start planning
-          </Button>
+          <NetworkMap
+            network={network}
+            showLines
+            onStartPlanning={startPlanning}
+          />
         </>
       )}
 
@@ -183,6 +158,13 @@ function GamePage() {
             shows only stations, while the segment list is used to build the
             route.
           </Alert>
+
+          {game && (
+            <Alert variant="info">
+              Start from <strong>{game.startStationName}</strong> and reach{' '}
+              <strong>{game.destinationStationName}</strong>.
+            </Alert>
+          )}
 
           <Timer
             key={timerKey}
@@ -208,13 +190,13 @@ function GamePage() {
             </Col>
 
             <Col
-  md={5}
-  style={{
-    position: 'sticky',
-    top: '90px',
-    alignSelf: 'flex-start'
-  }}
->
+              md={5}
+              style={{
+                position: 'sticky',
+                top: '90px',
+                alignSelf: 'flex-start'
+              }}
+            >
               <div className="d-flex justify-content-between align-items-center">
                 <h2>Your route</h2>
 

@@ -27,7 +27,7 @@ function AppContent() {
     <>
       {!hideNavbar && <NavigationBar />}
 
-      <Container fluid={hideNavbar} className={hideNavbar ? 'p-0' : 'py-4'}>
+      <Container fluid className="p-0">
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />

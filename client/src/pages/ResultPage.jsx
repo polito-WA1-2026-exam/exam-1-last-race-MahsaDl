@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router';
-import { Alert, Button, Card, ListGroup, Spinner } from 'react-bootstrap';
+import { Alert, Button, Spinner } from 'react-bootstrap';
 
 import API from '../api/API.js';
 
@@ -39,85 +39,136 @@ function ResultPage() {
     return <Alert variant="danger">{error}</Alert>;
   }
 
+  const travelledSegments = game.travelledSegments || [];
+
+  const gained = travelledSegments
+    .filter((segment) => segment.coinEffect > 0)
+    .reduce((sum, segment) => sum + segment.coinEffect, 0);
+
+  const lost = travelledSegments
+    .filter((segment) => segment.coinEffect < 0)
+    .reduce((sum, segment) => sum + Math.abs(segment.coinEffect), 0);
+
+const routeStations = [game.startStationName];
+
+for (const segment of travelledSegments) {
+  const lastStation = routeStations[routeStations.length - 1];
+
+  if (segment.station1Name === lastStation) {
+    routeStations.push(segment.station2Name);
+  } else if (segment.station2Name === lastStation) {
+    routeStations.push(segment.station1Name);
+  }
+}
+
+const routeText =
+  travelledSegments.length > 0
+    ? routeStations.join(' → ')
+    : `${game.startStationName} → ${game.destinationStationName}`;
+
   return (
-    <>
-      <h1>Game Result</h1>
+    <div className="result-page">
+      <div className="confetti-dot dot-1"></div>
+      <div className="confetti-dot dot-2"></div>
+      <div className="confetti-dot dot-3"></div>
+      <div className="confetti-square square-1"></div>
+      <div className="confetti-square square-2"></div>
 
-      <Card className="mb-3">
-        <Card.Body>
-          <Card.Title>
-            {game.startStationName} → {game.destinationStationName}
-          </Card.Title>
+      <h1 className="result-title">
+        {game.valid ? 'JOURNEY COMPLETE' : 'JOURNEY FAILED'}
+      </h1>
 
-          <Card.Text>
-            Final score: <strong>{game.score}</strong>
-          </Card.Text>
+      <section className="result-card">
+        <div className="result-trophy">
+          {game.valid ? '🏆' : '⚠️'}
+        </div>
 
-          <Card.Text>
-            Status:{' '}
-            <strong>
-              {game.completed ? 'Completed' : 'Not completed'}
-            </strong>
-          </Card.Text>
+        <p className="result-label">FINAL SCORE</p>
 
-          <Card.Text>
-            Route validity:{' '}
-            <strong>
-              {game.valid ? 'Valid route' : 'Invalid route'}
-            </strong>
-          </Card.Text>
+        <div className={game.valid ? 'result-score' : 'result-score invalid'}>
+          {game.score}
+        </div>
 
-          {!game.valid && game.failureReason && (
-            <Alert variant="danger">
-              Reason: {game.failureReason}
-            </Alert>
-          )}
-        </Card.Body>
-      </Card>
+        <p className="result-coins">coins</p>
 
-      <h2>Travelled segments</h2>
+        {!game.valid && game.failureReason && (
+          <div className="result-failure">
+            {game.failureReason}
+          </div>
+        )}
 
-      {game.travelledSegments.length === 0 ? (
-        <Alert variant="warning">
-          No valid route was saved for this game.
-        </Alert>
-      ) : (
-        <ListGroup className="mb-3">
-          {game.travelledSegments.map((segment) => (
-            <ListGroup.Item key={segment.sequenceNumber}>
-              <strong>Step {segment.sequenceNumber}</strong>
-              <br />
+        <div className="result-divider"></div>
 
-              {segment.station1Name} ↔ {segment.station2Name}
-              <br />
+        <div className="result-route">
+          <span>{game.valid ? 'ROUTE' : 'TARGET ROUTE'}</span>
+          <p>{routeText}</p>
+        </div>
 
-              <span style={{ color: segment.lineColor }}>
-                {segment.lineName}
-              </span>
-              <br />
+        <div className="result-stats">
+          <div>
+            <span>SEGMENTS</span>
+            <strong>{travelledSegments.length}</strong>
+          </div>
 
-              Event: {segment.eventDescription}
-              <br />
+          <div>
+            <span>STARTED WITH</span>
+            <strong>20 🪙</strong>
+          </div>
 
-              Coin effect:{' '}
-              <strong>
-                {segment.coinEffect > 0
-                  ? `+${segment.coinEffect}`
-                  : segment.coinEffect}
-              </strong>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
+          <div>
+            <span>GAINED</span>
+            <strong className="gain">+{gained}</strong>
+          </div>
+
+          <div>
+            <span>LOST</span>
+            <strong className="loss">-{lost}</strong>
+          </div>
+        </div>
+      </section>
+
+      {travelledSegments.length > 0 && (
+        <section className="events-card">
+          <h2>Segment events</h2>
+
+          <div className="events-list">
+            {travelledSegments.map((segment) => (
+              <div className="event-row" key={segment.sequenceNumber}>
+                <div>
+                  <strong>Step {segment.sequenceNumber}</strong>
+                  <p>
+                    {segment.station1Name} ↔ {segment.station2Name}
+                  </p>
+                  <small>{segment.eventDescription}</small>
+                </div>
+
+                <span
+                  className={
+                    segment.coinEffect >= 0
+                      ? 'event-effect positive'
+                      : 'event-effect negative'
+                  }
+                >
+                  {segment.coinEffect > 0
+                    ? `+${segment.coinEffect}`
+                    : segment.coinEffect}
+                </span>
+              </div>
+            ))}
+          </div>
+        </section>
       )}
 
-      <Button as={Link} to="/game" className="me-2">
-        Play again
-      </Button>
+      <div className="result-actions">
+        <Button as={Link} to="/game" className="result-play-button">
+          ▶ Play Again
+        </Button>
 
-      <Button as={Link} to="/ranking" variant="secondary">
-        View ranking
-      </Button>
-    </>
+        <Button as={Link} to="/ranking" className="result-outline-button">
+          View Ranking
+        </Button>
+      </div>
+    </div>
   );
 }
 

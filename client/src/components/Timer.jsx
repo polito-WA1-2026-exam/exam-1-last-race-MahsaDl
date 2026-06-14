@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { Alert } from 'react-bootstrap';
 
 function Timer({ initialSeconds, onTimeExpired, stopped }) {
   const [secondsLeft, setSecondsLeft] = useState(initialSeconds);
@@ -25,10 +24,20 @@ function Timer({ initialSeconds, onTimeExpired, stopped }) {
     };
   }, [secondsLeft, onTimeExpired, stopped]);
 
+  const minutes = Math.floor(secondsLeft / 60);
+  const seconds = String(secondsLeft % 60).padStart(2, '0');
+
   return (
-    <Alert variant={secondsLeft <= 10 ? 'danger' : 'secondary'}>
-      Time left: <strong>{secondsLeft}</strong> seconds
-    </Alert>
+    <div
+      className={secondsLeft <= 10 ? 'timer-display danger' : 'timer-display'}
+      style={{
+        '--timer-progress': `${(secondsLeft / initialSeconds) * 360}deg`
+      }}
+    >
+      <strong>
+        {minutes}:{seconds}
+      </strong>
+    </div>
   );
 }
 

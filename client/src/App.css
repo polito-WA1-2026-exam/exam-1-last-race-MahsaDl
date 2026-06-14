@@ -1016,6 +1016,263 @@ body:has(.setup-layout) {
   font-size: 11px;
 }
 
+.planning-page {
+  min-height: 100vh;
+  padding: 20px 6vw 56px;
+  color: white;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+.planning-topbar {
+  position: sticky;
+  top: 72px;
+  z-index: 30;
+  display: grid;
+  grid-template-columns: 240px 1fr 150px;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 14px 8px;
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.timer-card {
+  width: 240px;
+  height: 78px;
+  border-radius: 999px;
+  background: transparent;
+  display: grid;
+  place-items: center;
+}
+
+.timer-display {
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fb7185;
+  font-size: 30px;
+  font-weight: 900;
+  background:
+    linear-gradient(#1a1a2e, #1a1a2e) padding-box,
+    conic-gradient(from -90deg,
+      #fb7185 var(--timer-progress),
+      rgba(251, 113, 133, 0.18) 0) border-box;
+  border: 3px solid transparent;
+  box-shadow: 0 0 18px rgba(251, 113, 133, 0.25);
+}
+
+.timer-display.danger {
+  animation: timerPulse 0.8s infinite alternate;
+}
+
+@keyframes timerPulse {
+  from {
+    box-shadow: 0 0 12px rgba(251, 113, 133, 0.25);
+  }
+
+  to {
+    box-shadow: 0 0 28px rgba(251, 113, 133, 0.75);
+  }
+}
+
+.planning-mission {
+  min-height: 78px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(129, 140, 248, 0.55);
+}
+
+.planning-mission.compact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.mission-arrow {
+  color: #c4b5fd;
+  font-size: 30px;
+}
+
+.mission-station.start {
+  color: #5eead4;
+}
+
+.mission-station.end {
+  color: #fb7185;
+}
+
+.coins-card {
+  width: 150px;
+  height: 58px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #facc15;
+  font-size: 24px;
+  font-weight: 900;
+  background: rgba(250, 204, 21, 0.14);
+  border: 1px solid rgba(250, 204, 21, 0.25);
+}
+
+.planning-map-card,
+.planning-segments-card,
+.route-builder {
+  padding: 24px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.planning-map-card {
+  height: fit-content;
+}
+
+.planning-map-card h3,
+.planning-segments-card h3,
+.route-builder h3 {
+  margin: 0 0 16px;
+  color: #c4b5fd;
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.planning-map-card .game-map-card {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+.planning-map-card .game-map-card h2 {
+  display: none;
+}
+
+.planning-stations {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.planning-stations span {
+  padding: 10px 16px;
+  border-radius: 999px;
+  color: white;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.planning-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+  align-items: start;
+}
+
+.planning-segment-list {
+  display: grid;
+  gap: 12px;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+
+.planning-segment {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 14px 18px;
+  color: white;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+}
+
+.planning-segment strong {
+  color: #5eead4;
+}
+
+.planning-segment.selected {
+  border-color: rgba(251, 113, 133, 0.75);
+  background: rgba(251, 113, 133, 0.12);
+}
+
+.planning-segment.selected strong {
+  color: #fb7185;
+}
+
+.route-builder {
+  position: sticky;
+  top: 190px;
+  min-height: auto;
+}
+
+.route-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.route-header p {
+  margin: 0;
+  color: #c4b5fd;
+}
+
+.clear-route-button {
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 999px;
+  padding: 10px 24px;
+  color: white;
+  background: transparent;
+}
+
+.empty-route {
+  color: rgba(255, 255, 255, 0.55);
+  margin: 24px 0;
+}
+
+.route-list {
+  margin: 18px 0 0;
+  padding-left: 24px;
+}
+
+.route-list li {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.submit-route-button {
+  width: 100%;
+  margin-top: 28px;
+  border: 0;
+  border-radius: 999px;
+  padding: 18px;
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+  background: linear-gradient(90deg, #00b894, #00cec9);
+}
+
+.clear-route-button:disabled,
+.submit-route-button:disabled,
+.planning-segment:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .navbar {
   position: sticky;
   top: 0;

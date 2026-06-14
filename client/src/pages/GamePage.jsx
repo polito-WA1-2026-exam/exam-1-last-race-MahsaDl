@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Col, ListGroup, Row, Spinner } from 'react-bootstrap';
+import { Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 
 import API from '../api/API.js';
 import NetworkMap from '../components/NetworkMap.jsx';
-import SegmentCard from '../components/SegmentCard.jsx';
 import Timer from '../components/Timer.jsx';
 
 function GamePage() {
@@ -152,57 +151,78 @@ function GamePage() {
       )}
 
       {phase === 'planning' && (
-        <>
-          <Alert variant="warning">
-            Planning phase: select the ordered sequence of segments. The map now
-            shows only stations, while the segment list is used to build the
-            route.
-          </Alert>
+        <div className="planning-page">
+          <div className="planning-topbar">
+            <div className="timer-card">
+              <Timer
+                key={timerKey}
+                initialSeconds={90}
+                stopped={submitting || submitted}
+                onTimeExpired={handleTimeExpired}
+              />
+            </div>
 
-          {game && (
-            <Alert variant="info">
-              Start from <strong>{game.startStationName}</strong> and reach{' '}
-              <strong>{game.destinationStationName}</strong>.
-            </Alert>
-          )}
+            <div className="planning-mission compact">
+              <span className="mission-station start">{game.startStationName}</span>
+              <span className="mission-arrow">→</span>
+              <span className="mission-station end">{game.destinationStationName}</span>
+            </div>
 
-          <Timer
-            key={timerKey}
-            initialSeconds={90}
-            stopped={submitting || submitted}
-            onTimeExpired={handleTimeExpired}
-          />
+            <div className="coins-card">
+              🪙 20
+            </div>
+          </div>
 
-          <NetworkMap network={network} showLines={false} />
+          <div className="planning-map-card">
+            <h3>STATIONS</h3>
 
-          <Row>
-            <Col md={7}>
-              <h2>Available segments</h2>
+            <NetworkMap
+              network={network}
+              showLines={false}
+            />
+          </div>
 
-              {network.segments.map((segment) => (
-                <SegmentCard
-                  key={segment.id}
-                  segment={segment}
-                  selected={selectedSegments.includes(segment.id)}
-                  onToggle={toggleSegment}
-                />
-              ))}
-            </Col>
+          <div className="planning-bottom">
+            <div className="planning-segments-card">
+              <h3>AVAILABLE SEGMENTS</h3>
 
-            <Col
-              md={5}
-              style={{
-                position: 'sticky',
-                top: '90px',
-                alignSelf: 'flex-start'
-              }}
-            >
-              <div className="d-flex justify-content-between align-items-center">
-                <h2>Your route</h2>
+              <div className="planning-segment-list">
+                {network.segments.map((segment) => (
+                  <button
+                    key={segment.id}
+                    type="button"
+                    className={
+                      selectedSegments.includes(segment.id)
+                        ? 'planning-segment selected'
+                        : 'planning-segment'
+                    }
+                    onClick={() => toggleSegment(segment.id)}
+                    disabled={submitting || submitted}
+                  >
+                    <span>
+                      {segment.station1Name} ↔ {segment.station2Name}
+                    </span>
 
-                <Button
-                  variant="outline-secondary"
-                  size="sm"
+                    <strong>
+                      {selectedSegments.includes(segment.id) ? 'Remove' : 'Add'}
+                    </strong>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="route-builder">
+              <div className="route-header">
+                <div>
+                  <h3>Your Route</h3>
+                  <p>
+                    Selected segments: <strong>{selectedSegments.length}</strong>
+                  </p>
+                </div>
+
+                <button
+                  className="clear-route-button"
+                  type="button"
                   onClick={clearRoute}
                   disabled={
                     selectedSegments.length === 0 ||
@@ -210,43 +230,39 @@ function GamePage() {
                     submitted
                   }
                 >
-                  Clear route
-                </Button>
+                  Clear
+                </button>
               </div>
 
               {selectedSegments.length === 0 ? (
-                <p>No segment selected yet.</p>
+                <p className="empty-route">No segment selected yet.</p>
               ) : (
-                <ListGroup as="ol" numbered>
+                <ol className="route-list">
                   {selectedSegments.map((id) => {
                     const segment = getSegmentById(id);
 
                     return (
-                      <ListGroup.Item as="li" key={id}>
-                        <strong>
-                          {segment.station1Name} ↔ {segment.station2Name}
-                        </strong>
-                      </ListGroup.Item>
+                      <li key={id}>
+                        {segment.station1Name} ↔ {segment.station2Name}
+                      </li>
                     );
                   })}
-                </ListGroup>
+                </ol>
               )}
 
-              <p className="mt-3">
-                Selected segments: <strong>{selectedSegments.length}</strong>
-              </p>
-
-              <Button
-                className="mt-2"
+              <button
+                className="submit-route-button"
+                type="button"
                 onClick={handleSubmit}
                 disabled={submitting || submitted}
               >
-                {submitting ? 'Submitting...' : 'Submit route'}
-              </Button>
-            </Col>
-          </Row>
-        </>
+                {submitting ? 'Submitting...' : 'Submit Route'}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
+
     </>
   );
 }

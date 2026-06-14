@@ -1,5 +1,69 @@
+:root {
+  --page-bg: linear-gradient(135deg, #1a1a2e, #16213e);
+  --panel-bg: rgba(255, 255, 255, 0.06);
+  --panel-border: rgba(255, 255, 255, 0.12);
+  --text-main: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --accent-cyan: #00cec9;
+  --accent-green: #00b894;
+  --accent-yellow: #facc15;
+  --accent-pink: #fb7185;
+  --accent-purple: #c4b5fd;
+
+  --page-x: 6vw;
+  --page-top: 36px;
+  --page-bottom: 64px;
+
+  --card-radius: 22px;
+  --card-padding: 24px;
+  --section-gap: 24px;
+}
+
 body {
-  background-color: #f8f9fa;
+  background: #16213e;
+}
+
+.game-page-shell,
+.planning-page,
+.result-page,
+.ranking-page {
+  color: var(--text-main);
+  background: var(--page-bg);
+}
+
+.game-panel,
+.network-panel,
+.legend-panel,
+.planning-map-card,
+.planning-segments-card,
+.route-builder,
+.result-card,
+.events-card,
+.ranking-table-card,
+.podium-card {
+  border-radius: var(--card-radius);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+}
+
+.section-title,
+.network-header h3,
+.planning-map-card h3,
+.planning-segments-card h3,
+.route-builder h3,
+.events-card h2 {
+  color: var(--accent-purple);
+  font-size: 18px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+
+.primary-game-button {
+  border: 0 !important;
+  border-radius: 999px !important;
+  color: white !important;
+  font-weight: 900 !important;
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-cyan)) !important;
 }
 
 h1 {
@@ -644,14 +708,12 @@ body:has(.setup-layout) {
 .result-page {
   min-height: 100vh;
   position: relative;
-  padding: 36px 24px 64px;
+  padding: 0;
   color: white;
   background: linear-gradient(135deg, #1a1a2e, #16213e);
   overflow: hidden;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-top: -1.5rem;
 }
+
 
 .result-title {
   text-align: center;
@@ -870,7 +932,6 @@ body:has(.setup-layout) {
 
 .ranking-page {
   min-height: calc(100vh - 72px);
-  padding: 36px 7vw 64px;
   color: white;
   background: linear-gradient(135deg, #201840, #2f285f);
 }
@@ -1277,6 +1338,12 @@ body:has(.setup-layout) {
   position: sticky;
   top: 0;
   z-index: 1000;
+}
+
+.page-container {
+  width: min(1400px, 92vw);
+  margin: 0 auto;
+  padding: 24px 0 80px;
 }
 
 .mission-min {

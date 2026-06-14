@@ -43,68 +43,70 @@ function RankingPage() {
 
   return (
     <div className="ranking-page">
-      <header className="ranking-header">
-        <div>
-          <h1>🏆 Leaderboard</h1>
-          <p>Best scores from all players</p>
-        </div>
+      <div className="page-container">
+        <header className="ranking-header">
+          <div>
+            <h1>🏆 Leaderboard</h1>
+            <p>Best scores from all players</p>
+          </div>
 
-        <Button as={Link} to="/game" className="ranking-play-button">
-          Play
-        </Button>
-      </header>
+          <Button as={Link} to="/game" className="ranking-play-button">
+            Play
+          </Button>
+        </header>
 
-      {ranking.length === 0 ? (
-        <Alert variant="info">No completed games yet.</Alert>
-      ) : (
-        <>
-          <section className="podium">
-            {topThree.map((row, index) => (
-              <article
-                className={`podium-card podium-${index + 1}`}
-                key={row.username}
-              >
-                <div className="podium-rank">
-                  #{index + 1}
-                  {index === 0 && <span>👑</span>}
-                </div>
-
-                {row.username === user.username && (
-                  <span className="you-badge">YOU</span>
-                )}
-
-                <h2>{row.username}</h2>
-                <strong>{row.bestScore}</strong>
-                <small>coins</small>
-              </article>
-            ))}
-          </section>
-
-          <section className="ranking-table-card">
-            <div className="ranking-table-head">
-              <span>Rank</span>
-              <span>Player</span>
-              <span>Best score</span>
-            </div>
-
-            {ranking.map((row, index) => (
-              <div className="ranking-row" key={row.username}>
-                <span>{index + 1}</span>
-
-                <span>
-                  {row.username}
+        {ranking.length === 0 ? (
+          <Alert variant="info">No completed games yet.</Alert>
+        ) : (
+          <>
+            <section className="podium">
+              {topThree.map((row, index) => (
+                <article
+                  className={`podium-card podium-${index + 1}`}
+                  key={row.username}
+                >
+                  <div className="podium-rank">
+                    #{index + 1}
+                    {index === 0 && <span>👑</span>}
+                  </div>
 
                   {row.username === user.username && (
-                    <span className="you-inline">YOU</span>
+                    <span className="you-badge">YOU</span>
                   )}
-                </span>
 
-                <strong>{row.bestScore}</strong>
+                  <h2>{row.username}</h2>
+                  <strong>{row.bestScore}</strong>
+                  <small>coins</small>
+                </article>
+              ))}
+            </section>
+
+            <section className="ranking-table-card">
+              <div className="ranking-table-head">
+                <span>Rank</span>
+                <span>Player</span>
+                <span>Best score</span>
               </div>
-            ))}
-          </section>
-        </>
-      )}
+
+              {ranking.map((row, index) => (
+                <div className="ranking-row" key={row.username}>
+                  <span>{index + 1}</span>
+
+                  <span>
+                    {row.username}
+
+                    {row.username === user.username && (
+                      <span className="you-inline">YOU</span>
+                    )}
+                  </span>
+
+                  <strong>{row.bestScore}</strong>
+                </div>
+              ))}
+            </section>
+          </>
+        )}
+      </div>
     </div>
   );
 }

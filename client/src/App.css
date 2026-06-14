@@ -1278,3 +1278,11 @@ body:has(.setup-layout) {
   top: 0;
   z-index: 1000;
 }
+
+.mission-min {
+  margin-left: auto;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}

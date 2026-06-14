@@ -166,6 +166,7 @@ function GamePage() {
               <span className="mission-station start">{game.startStationName}</span>
               <span className="mission-arrow">→</span>
               <span className="mission-station end">{game.destinationStationName}</span>
+              <span className="mission-min">at least 3 segments</span>
             </div>
 
             <div className="coins-card">

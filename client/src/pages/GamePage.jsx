@@ -59,6 +59,8 @@ function GamePage() {
       return;
     }
 
+    setError('');
+
     setSelectedSegments((oldSegments) => {
       if (oldSegments.includes(segmentId)) {
         return oldSegments.filter((id) => id !== segmentId);
@@ -94,8 +96,8 @@ function GamePage() {
   }
 
   async function handleSubmit() {
-    if (selectedSegments.length === 0) {
-      setError('Select at least one segment.');
+    if (selectedSegments.length < 3) {
+      setError('Select at least 3 segments to submit your route.');
       return;
     }
 
@@ -126,7 +128,6 @@ function GamePage() {
   return (
     <>
 
-      {error && <Alert variant="danger">{error}</Alert>}
 
 
       {phase === 'setup' && (
@@ -249,6 +250,12 @@ function GamePage() {
                     );
                   })}
                 </ol>
+              )}
+
+              {error && (
+                <div className="route-error">
+                  {error}
+                </div>
               )}
 
               <button

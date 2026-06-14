@@ -1286,3 +1286,13 @@ body:has(.setup-layout) {
   font-weight: 600;
   white-space: nowrap;
 }
+
+.route-error {
+  margin-top: 22px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  color: #fecaca;
+  background: rgba(251, 113, 133, 0.14);
+  border: 1px solid rgba(251, 113, 133, 0.45);
+  font-weight: 700;
+}

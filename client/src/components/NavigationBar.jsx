@@ -13,7 +13,7 @@ function NavigationBar() {
   }
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar variant="dark" expand="lg" className="app-navbar">
       <Container>
         <Navbar.Brand as={Link} to="/">
           Last Race

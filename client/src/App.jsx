@@ -20,8 +20,8 @@ function AppContent() {
   const { loggedIn } = useAuth();
 
   const hideNavbar =
-  (location.pathname === '/' && !loggedIn) ||
-  location.pathname === '/login';
+    (location.pathname === '/' && !loggedIn) ||
+    location.pathname === '/login';
 
   return (
     <>
@@ -68,9 +68,11 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <div className="app-background">
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </div>
   );
 }
 

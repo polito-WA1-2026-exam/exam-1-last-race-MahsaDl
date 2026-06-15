@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router';
-import { Alert, Button, Spinner } from 'react-bootstrap';
+import { Alert, Spinner } from 'react-bootstrap';
 
 import API from '../api/API.js';
 import useAuth from '../hooks/useAuth.js';
@@ -44,16 +43,12 @@ function RankingPage() {
   return (
     <div className="ranking-page">
       <div className="page-container">
-        <header className="ranking-header">
+        <div className="ranking-header">
           <div>
             <h1>🏆 Leaderboard</h1>
             <p>Best scores from all players</p>
           </div>
-
-          <Button as={Link} to="/game" className="ranking-play-button">
-            Play
-          </Button>
-        </header>
+        </div>
 
         {ranking.length === 0 ? (
           <Alert variant="info">No completed games yet.</Alert>

@@ -131,23 +131,25 @@ function GamePage() {
 
 
       {phase === 'setup' && (
-        <div className="page-container">
-          <div className="setup-header">
-            <div>
-              <h2>SETUP PHASE</h2>
-              <p>Study the network map before you begin</p>
+        <div className="game-page-shell">
+          <div className="page-container">
+            <div className="setup-header">
+              <div>
+                <h2>SETUP PHASE</h2>
+                <p>Study the network map before you begin</p>
+              </div>
+
+              <div className="coins-pill">
+                🪙 Starting coins: <strong>20</strong>
+              </div>
             </div>
 
-            <div className="coins-pill">
-              🪙 Starting coins: <strong>20</strong>
-            </div>
+            <NetworkMap
+              network={network}
+              showLines
+              onStartPlanning={startPlanning}
+            />
           </div>
-
-          <NetworkMap
-            network={network}
-            showLines
-            onStartPlanning={startPlanning}
-          />
         </div>
       )}
 

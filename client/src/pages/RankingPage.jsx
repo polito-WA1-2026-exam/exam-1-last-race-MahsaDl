@@ -40,6 +40,13 @@ function RankingPage() {
 
   const topThree = ranking.slice(0, 3);
 
+  const podiumOrder = [
+    topThree[1], // #2
+    topThree[0], // #1
+    topThree[2], // #3
+  ].filter(Boolean);
+
+
   return (
     <div className="ranking-page">
       <div className="page-container">
@@ -55,25 +62,33 @@ function RankingPage() {
         ) : (
           <>
             <section className="podium">
-              {topThree.map((row, index) => (
-                <article
-                  className={`podium-card podium-${index + 1}`}
-                  key={row.username}
-                >
-                  <div className="podium-rank">
-                    #{index + 1}
-                    {index === 0 && <span>👑</span>}
-                  </div>
+              {podiumOrder.map((row) => {
+                const realRank = ranking.findIndex((player) => player.username === row.username) + 1;
 
-                  {row.username === user.username && (
-                    <span className="you-badge">YOU</span>
-                  )}
+                return (
+                  <article
+                    className={`podium-card podium-${realRank}`}
+                    key={row.username}
+                  >
+                    <div className="podium-rank">
+                      #{realRank}
+                      {realRank === 1 && <span>👑</span>}
+                    </div>
 
-                  <h2>{row.username}</h2>
-                  <strong>{row.bestScore}</strong>
-                  <small>coins</small>
-                </article>
-              ))}
+                    {row.username === user.username && (
+                      <span className="you-badge">YOU</span>
+                    )}
+
+                    <div className="podium-avatar">
+                      {row.username.slice(0, 2).toUpperCase()}
+                    </div>
+
+                    <h2>{row.username}</h2>
+                    <strong>{row.bestScore}</strong>
+                    <small>coins</small>
+                  </article>
+                );
+              })}
             </section>
 
             <section className="ranking-table-card">

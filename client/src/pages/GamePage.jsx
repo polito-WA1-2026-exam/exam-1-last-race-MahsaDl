@@ -135,12 +135,12 @@ function GamePage() {
           <div className="page-container">
             <div className="setup-header">
               <div>
-                <h2>SETUP PHASE</h2>
-                <p>Study the network map before you begin</p>
+                <h2>Study the Map</h2>
+                <p>Memorize the network before the race begins</p>
               </div>
 
               <div className="coins-pill">
-                🪙 Starting coins: <strong>20</strong>
+                🪙 20 starting coins
               </div>
             </div>
 

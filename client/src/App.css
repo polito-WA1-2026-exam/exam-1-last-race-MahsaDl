@@ -466,7 +466,7 @@ h1 {
 .setup-layout {
   display: flex;
   gap: 32px;
-  align-items: flex-start;
+  align-items: stretch;
 }
 
 .network-panel {
@@ -626,9 +626,10 @@ body:has(.setup-layout) {
 }
 
 .setup-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 330px;
   align-items: center;
+  gap: 32px;
   margin-bottom: 24px;
 }
 
@@ -649,6 +650,8 @@ body:has(.setup-layout) {
   background: rgba(250, 204, 21, .15);
   color: #facc15;
   font-weight: 700;
+  justify-self: center;
+  margin-right: 0;
 }
 
 .sidebar-divider {

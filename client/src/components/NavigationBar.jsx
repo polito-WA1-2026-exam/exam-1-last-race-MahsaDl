@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router';
-import { Button, Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar } from 'react-bootstrap';
 
 import useAuth from '../hooks/useAuth.js';
 
@@ -7,22 +7,30 @@ function NavigationBar() {
   const { user, loggedIn, logout } = useAuth();
   const navigate = useNavigate();
 
-  async function handleLogout() {
+  async function handleLogoutClick() {
+    const shouldLogout = window.confirm('Do you want to logout?');
+
+    if (!shouldLogout) {
+      return;
+    }
+
     await logout();
     navigate('/');
   }
 
+  const initials = user?.username?.slice(0, 2).toUpperCase() || '';
+
   return (
     <Navbar variant="dark" expand="lg" className="app-navbar">
-      <Container>
-        <Navbar.Brand as={Link} to="/">
-          Last Race
+      <Container fluid className="app-navbar-container">
+        <Navbar.Brand as={Link} to="/" className="app-navbar-brand">
+          LAST RACE
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="main-navbar" />
 
         <Navbar.Collapse id="main-navbar">
-          <Nav className="me-auto">
+          <Nav className="app-navbar-links">
             <Nav.Link as={NavLink} to="/">
               Home
             </Nav.Link>
@@ -40,27 +48,16 @@ function NavigationBar() {
             )}
           </Nav>
 
-          <Nav>
-            {loggedIn ? (
-              <>
-                <Navbar.Text className="me-3">
-                  Signed in as <strong>{user.username}</strong>
-                </Navbar.Text>
-
-                <Button
-                  variant="outline-light"
-                  size="sm"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-              </>
-            ) : (
-              <Button as={Link} to="/login" variant="outline-light" size="sm">
-                Login
-              </Button>
-            )}
-          </Nav>
+          {loggedIn && (
+            <button
+              type="button"
+              className="user-avatar-button"
+              onClick={handleLogoutClick}
+              title={`Signed in as ${user.username}`}
+            >
+              {initials}
+            </button>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

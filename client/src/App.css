@@ -1341,18 +1341,47 @@ body:has(.setup-layout) {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #0b0b22;
+  min-height: 76px;
+  background: rgba(8, 9, 33, 0.96);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
+.app-navbar-container {
+  width: min(1720px, 92vw);
+  margin: 0 auto;
+}
+
+.app-navbar-brand {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+.app-navbar .navbar-collapse {
+  justify-content: flex-end;
+  gap: 56px;
+}
+
+.app-navbar-links {
+  gap: 44px;
+}
+
+.app-navbar .nav-link {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 20px;
+}
+
+.app-navbar .nav-link.active {
+  color: white;
+  font-weight: 800;
+}
+
 .app-navbar .navbar-brand,
-.app-navbar .nav-link,
 .app-navbar .navbar-text {
   color: rgba(255, 255, 255, 0.65);
 }
 
-.app-navbar .navbar-brand,
-.app-navbar .nav-link.active {
+.app-navbar .navbar-brand {
   color: white;
 }
 
@@ -1361,9 +1390,9 @@ body:has(.setup-layout) {
 }
 
 .page-container {
-  width: min(1400px, 92vw);
+  width: min(100% - 160px, 1680px);
   margin: 0 auto;
-  padding: 24px 0 80px;
+  padding: 56px 0 96px;
 }
 
 .mission-min {

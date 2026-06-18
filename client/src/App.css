@@ -69,27 +69,14 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px;
   color: white;
   box-sizing: border-box;
-}
-
-.home-panel {
-  width: min(760px, 90vw);
-  border-radius: 24px;
-  padding: 42px 56px 34px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  position: relative;
-  z-index: 1;
 }
 
 .home-panel h1 {
   color: white;
   text-transform: uppercase;
-  font-size: 54px;
+  font-size: 32px;
   font-weight: 900;
   letter-spacing: 1px;
   text-shadow: 0 0 18px rgba(255, 255, 255, 0.45);
@@ -98,7 +85,7 @@ h1 {
 .home-subtitle {
   color: #ddd6fe;
   font-size: 20px;
-  margin-bottom: 24px;
+  margin-top: 56px;
 }
 
 .mini-map {
@@ -106,7 +93,7 @@ h1 {
   height: 172px;
   background: transparent;
   border: 0;
-  margin: 28px auto 34px;
+  margin: 0px auto 34px;
   position: relative;
 }
 
@@ -267,51 +254,19 @@ h1 {
 }
 
 .home-how-to-play {
-  width: min(620px, 100%);
+  width: min(760px, 100%);
   margin: 0 auto 34px;
-  padding: 20px 28px;
-  border-radius: 18px;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0;
+  background: transparent;
+  border: 0;
 }
 
 .home-how-to-play h2 {
   color: white;
-  font-size: 13px;
+  font-size: 24px;
   font-weight: 900;
   letter-spacing: 0.5px;
-  margin: 0 0 16px;
-}
-
-.home-how-steps {
-  display: flex;
-  justify-content: center;
-  gap: 34px;
-  align-items: center;
-}
-
-.home-how-steps div {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.home-how-steps span {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  color: white;
-  font-weight: 900;
-  background: rgba(124, 58, 237, 0.35);
-  border: 2px solid #a78bfa;
-}
-
-.home-how-steps p {
-  color: #ddd6fe;
-  font-size: 14px;
-  margin: 0;
+  margin: 0 0 24px;
 }
 
 .home-main-button {
@@ -327,29 +282,6 @@ h1 {
 
 .home-main-button:hover {
   filter: brightness(1.08);
-}
-
-.home-link-button {
-  display: block;
-  margin: 14px auto 0;
-  color: #ddd6fe;
-  text-decoration: none;
-}
-
-.home-user {
-  color: #ddd6fe;
-  margin-bottom: 16px;
-}
-
-.login-page {
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  color: white;
 }
 
 .login-card {
@@ -741,13 +673,6 @@ body:has(.setup-layout) {
   margin-top: 8px;
 }
 
-.result-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 24px;
-  margin-top: 24px;
-}
-
 .result-stats strong {
   display: block;
   font-size: 24px;
@@ -1104,8 +1029,8 @@ body:has(.setup-layout) {
 }
 
 .timer-card {
-  width: 240px;
-  height: 78px;
+  width: 150px;
+  height: 58px;
   border-radius: 999px;
   background: transparent;
   display: grid;
@@ -1374,7 +1299,8 @@ body:has(.setup-layout) {
 .page-container {
   width: min(100% - 160px, 1680px);
   margin: 0 auto;
-  padding: 56px 0 96px;
+  padding-top: 32px;
+  padding-bottom: 80px;
 }
 
 .mission-min {
@@ -1654,14 +1580,6 @@ body:has(.setup-layout) {
   margin: 0 0 18px;
 }
 
-.phase-header {
-  margin-bottom: 24px;
-  display: grid;
-  grid-template-columns: 1fr 530px;
-  align-items: end;
-  gap: 32px;
-}
-
 .phase-header .timer-card {
   justify-self: center;
   width: 280px;
@@ -1775,14 +1693,6 @@ body:has(.setup-layout) {
   font-weight: 900;
 }
 
-.mission-inline {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  margin: 0;
-  position: relative;
-  top: 4px;
-}
 
 .planning-side-panel-header {
   display: flex;
@@ -1834,4 +1744,202 @@ body:has(.setup-layout) {
 
 .result-route p {
   text-align: center;
+}
+
+.home-how-cards div {
+  padding: 16px;
+  border-radius: 16px;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home-how-cards strong {
+  display: block;
+  color: white;
+  font-size: 14px;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.home-how-cards p {
+  margin: 0;
+  color: #ddd6fe;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.home-landing {
+  display: block;
+  min-height: calc(100vh - 76px);
+}
+
+.home-header {
+  margin-bottom: 24px;
+}
+
+.home-header h1 {
+  margin: 0;
+  color: white;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.home-header p {
+  margin: 4px 0 0;
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+
+.home-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 32px;
+  align-items: stretch;
+}
+
+.home-panel {
+  border-radius: 24px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  position: relative;
+  z-index: 1;
+  padding: 56px 64px 48px;
+  width: 100%;
+  margin: 0;
+}
+
+.home-main-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-side-card {
+  border-radius: var(--card-radius);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  padding: 28px;
+}
+
+.home-how-cards {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+.home-quick-rules {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.home-quick-rules h2 {
+  color: white;
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 18px;
+}
+
+.home-quick-rules div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0;
+  color: #ddd6fe;
+}
+
+.home-quick-rules strong {
+  color: #5eead4;
+  font-size: 22px;
+}
+
+.home-quick-rules span {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.home-train {
+  width: 96px;
+  height: 46px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  background: linear-gradient(90deg, #667eea, #764ba2);
+  position: relative;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 24px rgba(124, 58, 237, 0.35);
+}
+
+.home-train span {
+  width: 15px;
+  height: 13px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.home-train::before,
+.home-train::after {
+  content: '';
+  position: absolute;
+  bottom: -11px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #17172d;
+}
+
+.home-train::before {
+  left: 18px;
+}
+
+.home-train::after {
+  right: 18px;
+}
+
+.home-main-card {
+  padding-top: 36px;
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h1,
+.page-header h2 {
+  margin: 0;
+  color: white;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.page-header p {
+  margin: 4px 0 0;
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+
+.phase-header {
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 530px;
+  gap: 32px;
+  align-items: center;
+}
+
+
+.mission-inline {
+  display: flex;
+  gap: 24px;
+  margin: 0;
+  top: 4px;
+  position: static;
+  align-items: center;
 }

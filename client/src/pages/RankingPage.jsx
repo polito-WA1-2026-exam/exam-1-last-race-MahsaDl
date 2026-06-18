@@ -50,11 +50,9 @@ function RankingPage() {
   return (
     <div className="ranking-page">
       <div className="page-container">
-        <div className="ranking-header">
-          <div>
-            <h1>🏆 Leaderboard</h1>
-            <p>Best scores from all players</p>
-          </div>
+        <div className="page-header ranking-header">
+          <h1>🏆 Leaderboard</h1>
+          <p>Best scores from all players</p>
         </div>
 
         {ranking.length === 0 ? (

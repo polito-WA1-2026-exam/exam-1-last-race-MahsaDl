@@ -22,7 +22,7 @@ function LoginPage() {
 
     try {
       await login(username, password);
-      navigate('/game');
+      navigate('/');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -35,7 +35,7 @@ function LoginPage() {
   }
 
   if (loggedIn) {
-    return <Navigate to="/game" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return (

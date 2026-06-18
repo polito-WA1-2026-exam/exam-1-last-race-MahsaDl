@@ -15,7 +15,7 @@ function NavigationBar() {
     }
 
     await logout();
-    navigate('/');
+    navigate('/login');
   }
 
   const initials = user?.username?.slice(0, 2).toUpperCase() || '';

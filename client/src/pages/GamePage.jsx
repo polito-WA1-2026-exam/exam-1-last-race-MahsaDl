@@ -134,7 +134,7 @@ function GamePage() {
       {phase === 'setup' && (
         <div className="game-page-shell">
           <div className="page-container">
-            <div className="setup-header">
+            <div className="page-header setup-header">
               <div>
                 <h2>Study the Map</h2>
                 <p>Memorize the network before the race begins</p>
@@ -157,7 +157,7 @@ function GamePage() {
       {phase === 'planning' && (
         <div className="planning-page">
           <div className="page-container">
-            <div className="phase-header">
+            <div className="page-header phase-header">
               <div>
                 <h2>Your Mission :</h2>
 

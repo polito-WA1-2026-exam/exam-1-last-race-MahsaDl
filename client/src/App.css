@@ -31,8 +31,7 @@ body {
 .route-builder,
 .result-card,
 .events-card,
-.ranking-table-card,
-.podium-card {
+.ranking-table-card {
   border-radius: var(--card-radius);
   background: var(--panel-bg);
   border: 1px solid var(--panel-border);
@@ -556,11 +555,6 @@ h1 {
   color: white;
 }
 
-.planning-stations {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
 
 .planning-stations span {
   padding: 10px 14px;
@@ -650,7 +644,6 @@ body:has(.setup-layout) {
   background: rgba(250, 204, 21, .15);
   color: #facc15;
   font-weight: 700;
-  justify-self: center;
   margin-right: 0;
 }
 
@@ -1147,19 +1140,19 @@ body:has(.setup-layout) {
 }
 
 .planning-mission {
-  min-height: 78px;
-  border-radius: 22px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(129, 140, 248, 0.55);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0;
+  background: none;
+  border: none;
 }
 
 .planning-mission.compact {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 28px;
-  font-size: 24px;
-  font-weight: 900;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  min-height: auto;
 }
 
 .mission-arrow {
@@ -1200,7 +1193,10 @@ body:has(.setup-layout) {
 }
 
 .planning-map-card {
-  height: fit-content;
+  flex: 1;
+  min-height: 560px;
+  padding: 24px;
+  height: 100%;
 }
 
 .planning-map-card h3,
@@ -1218,6 +1214,7 @@ body:has(.setup-layout) {
   padding: 0;
   background: transparent;
   border: 0;
+  height: 100%;
 }
 
 .planning-map-card .game-map-card h2 {
@@ -1247,30 +1244,6 @@ body:has(.setup-layout) {
   align-items: start;
 }
 
-.planning-segment-list {
-  display: grid;
-  gap: 12px;
-  max-height: none;
-  overflow: visible;
-  padding-right: 0;
-}
-
-.planning-segment {
-  width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  padding: 14px 18px;
-  color: white;
-  background: rgba(255, 255, 255, 0.06);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  text-align: left;
-}
-
-.planning-segment strong {
-  color: #5eead4;
-}
 
 .planning-segment.selected {
   border-color: rgba(251, 113, 133, 0.75);
@@ -1323,7 +1296,7 @@ body:has(.setup-layout) {
 
 .submit-route-button {
   width: 100%;
-  margin-top: 28px;
+  margin-bottom: 0;
   border: 0;
   border-radius: 999px;
   padding: 18px;
@@ -1468,4 +1441,371 @@ body:has(.setup-layout) {
     url("data:image/svg+xml,%3Csvg viewBox='0 0 1200 800' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 210 Q300 150 610 205 T1200 175' stroke='%23fb7185' stroke-width='5' fill='none'/%3E%3Cpath d='M0 345 Q380 285 700 375 T1200 315' stroke='%2338bdf8' stroke-width='5' fill='none'/%3E%3Cpath d='M0 500 Q330 555 650 480 T1200 520' stroke='%23facc15' stroke-width='5' fill='none'/%3E%3Cpath d='M0 650 Q310 595 615 675 T1200 640' stroke='%232dd4bf' stroke-width='5' fill='none'/%3E%3C/svg%3E");
   background-size: cover;
   background-position: center;
+}
+
+.planning-map-card .network-svg {
+  height: 650px;
+}
+
+.planning-map-header {
+  margin-bottom: 18px;
+}
+
+.planning-map-header h3 {
+  margin-bottom: 12px;
+}
+
+.planning-map-header .planning-mission {
+  width: 100%;
+  min-height: 64px;
+}
+
+.selected-count {
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.planning-side-panel .route-error {
+  margin-top: 18px;
+}
+
+.planning-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 32px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.planning-header h2 {
+  margin: 0;
+  color: white;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.planning-header .planning-mission {
+  min-height: 78px;
+}
+
+.planning-header .timer-card {
+  width: 260px;
+  height: 64px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.planning-mission-line {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 8px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.planning-mission-line .start {
+  color: #5eead4;
+}
+
+.planning-mission-line .end {
+  color: #ff6b8a;
+}
+
+.planning-mission-line .mission-min {
+  margin-left: 40px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 16px;
+}
+
+.mission-inline .start {
+  color: #5eead4;
+  font-weight: 900;
+}
+
+.mission-inline .end {
+  color: #ff6b8a;
+  font-weight: 900;
+}
+
+.mission-inline .mission-min {
+  margin-left: 28px;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.selected-segment-line {
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px rgba(94, 234, 212, 0.45));
+}
+
+.phase-header p {
+  font-size: 18px;
+  margin: 0;
+  color: #94a3b8;
+}
+
+.phase-header .coins-pill,
+.phase-header .timer-card {
+  justify-self: center;
+}
+
+.mission-inline .start,
+.mission-inline .end {
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.mission-inline .mission-min {
+  margin-left: 24px;
+  font-size: 15px;
+}
+
+.phase-header .timer-card,
+.phase-header .coins-pill {
+  justify-self: center;
+}
+
+.planning-map-card {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+}
+
+.planning-map-top {
+  margin-bottom: 18px;
+}
+
+.planning-map-top h2 {
+  margin: 0 0 8px;
+  color: white;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.route-preview {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.route-preview h3 {
+  margin: 0 0 8px;
+  color: #c4b5fd;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.planning-side-panel .timer-card {
+  width: 100%;
+  margin: 0 auto 28px;
+
+}
+
+.planning-segment {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: white;
+  background: rgba(255, 255, 255, 0.06);
+  justify-content: space-between;
+  text-align: left;
+  min-height: 64px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.planning-segment span {
+  white-space: nowrap;
+  line-height: 1.35;
+}
+
+.planning-segment strong {
+  color: #5eead4;
+  white-space: nowrap;
+}
+
+.route-preview p {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  line-height: 1.6;
+  max-height: 96px;
+  overflow-y: auto;
+}
+
+.planning-side-panel h3 {
+  color: #c4b5fd;
+  font-size: 20px;
+  font-weight: 900;
+  margin: 0 0 18px;
+}
+
+.phase-header {
+  margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr 530px;
+  align-items: end;
+  gap: 32px;
+}
+
+.phase-header .timer-card {
+  justify-self: center;
+  width: 280px;
+}
+
+.route-preview-outside {
+  width: 100%;
+  margin: 0;
+}
+
+.route-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.route-preview-header span {
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 800;
+}
+
+.route-arrow {
+  color: #5eead4;
+  font-size: 1.5rem;
+  font-weight: 900;
+  display: inline-flex;
+  vertical-align: middle;
+  margin: 0 10px 8px;
+}
+
+.station-start,
+.station-destination {
+  fill: #111326;
+  stroke-width: 6;
+}
+
+.station-start {
+  stroke: #14d6b8;
+  filter: drop-shadow(0 0 12px rgba(20, 214, 184, 0.75));
+}
+
+.station-destination {
+  stroke: #ff6b8a;
+  filter: drop-shadow(0 0 12px rgba(255, 107, 138, 0.75));
+}
+
+.station-marker-text {
+  fill: white;
+  font-size: 12px;
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.planning-side-panel {
+  height: auto;
+  min-height: auto;
+  border-radius: var(--card-radius);
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-self: stretch;
+  align-self: start;
+  position: relative;
+  padding: 28px;
+}
+
+.planning-segment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 8px;
+}
+
+.planning-side-panel .submit-route-button {
+  margin: 0;
+  position: static;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.planning-layout {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 530px;
+  gap: 32px;
+  align-items: start;
+}
+
+.planning-main-column {
+  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 100px;
+  align-self: start;
+}
+
+.phase-header>div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.phase-header h2 {
+  margin: 0;
+  color: white;
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.mission-inline {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 0;
+  position: relative;
+  top: 4px;
+}
+
+.planning-side-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.planning-side-panel-header h3 {
+  margin: 0;
+}
+
+.clear-all-button {
+  background: transparent;
+  border: none;
+  color: var(--accent-cyan);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  padding-right: 16px;
+
+}
+
+.clear-all-button:hover {
+  opacity: 0.8;
+}
+
+.clear-all-button:disabled {
+  opacity: 0.4;
+  cursor: default;
 }

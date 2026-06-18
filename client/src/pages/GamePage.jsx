@@ -32,8 +32,12 @@ function GamePage() {
           API.getNetwork(),
           API.startGame()
         ]);
+        const shuffled = [...networkData.segments].sort(() => Math.random() - 0.5);
 
-        setNetwork(networkData);
+        setNetwork({
+          ...networkData,
+          segments: shuffled
+        });
         setGame(gameData);
       } catch (err) {
         setError(err.message);
@@ -108,9 +112,6 @@ function GamePage() {
     await submitCurrentRoute();
   }
 
-  function getSegmentById(segmentId) {
-    return network.segments.find((segment) => segment.id === segmentId);
-  }
 
   if (loading) {
     return (
@@ -156,7 +157,17 @@ function GamePage() {
       {phase === 'planning' && (
         <div className="planning-page">
           <div className="page-container">
-            <div className="planning-topbar">
+            <div className="phase-header">
+              <div>
+                <h2>Your Mission :</h2>
+
+                <p className="mission-inline">
+                  <span className="start">{game.startStationName}</span>
+                  <span>→</span>
+                  <span className="end">{game.destinationStationName}</span>
+                </p>
+              </div>
+
               <div className="timer-card">
                 <Timer
                   key={timerKey}
@@ -165,31 +176,58 @@ function GamePage() {
                   onTimeExpired={handleTimeExpired}
                 />
               </div>
-
-              <div className="planning-mission compact">
-                <span className="mission-station start">{game.startStationName}</span>
-                <span className="mission-arrow">→</span>
-                <span className="mission-station end">{game.destinationStationName}</span>
-                <span className="mission-min">at least 3 segments</span>
-              </div>
-
-              <div className="coins-card">
-                🪙 20
-              </div>
             </div>
 
-            <div className="planning-map-card">
-              <h3>STATIONS</h3>
+            <div className="planning-layout">
+              <div className="planning-main-column">
+                <div className="route-preview route-preview-outside">
+                  <div className="route-preview-header">
+                    <h3>Your Route</h3>
+                    <span>at least 3 segments</span>
+                  </div>
 
-              <NetworkMap
-                network={network}
-                showLines={false}
-              />
-            </div>
+                  <p>
+                    {selectedSegments.length === 0 ? (
+                      'No segment selected yet.'
+                    ) : (
+                      selectedSegments.map((id, index) => {
+                        const segment = network.segments.find((item) => item.id === id);
 
-            <div className="planning-bottom">
-              <div className="planning-segments-card">
-                <h3>AVAILABLE SEGMENTS</h3>
+                        return (
+                          <span key={id}>
+                            {index > 0 && <span className="route-arrow"> → </span>}
+                            {segment.station1Name} ↔ {segment.station2Name}
+                          </span>
+                        );
+                      })
+                    )}
+                  </p>
+                </div>
+
+                <div className="planning-map-card">
+                  <NetworkMap
+                    network={network}
+                    showLines={false}
+                    selectedSegments={selectedSegments}
+                    startStationName={game.startStationName}
+                    destinationStationName={game.destinationStationName}
+                  />
+                </div>
+              </div>
+
+              <aside className="planning-side-panel">
+                <div className="planning-side-panel-header">
+                  <h3>SEGMENTS</h3>
+
+                  <button
+                    type="button"
+                    className="clear-all-button"
+                    onClick={clearRoute}
+                    disabled={selectedSegments.length === 0 || submitting || submitted}
+                  >
+                    Clear
+                  </button>
+                </div>
 
                 <div className="planning-segment-list">
                   {network.segments.map((segment) => (
@@ -214,52 +252,8 @@ function GamePage() {
                     </button>
                   ))}
                 </div>
-              </div>
 
-              <div className="route-builder">
-                <div className="route-header">
-                  <div>
-                    <h3>Your Route</h3>
-                    <p>
-                      Selected segments: <strong>{selectedSegments.length}</strong>
-                    </p>
-                  </div>
-
-                  <button
-                    className="clear-route-button"
-                    type="button"
-                    onClick={clearRoute}
-                    disabled={
-                      selectedSegments.length === 0 ||
-                      submitting ||
-                      submitted
-                    }
-                  >
-                    Clear
-                  </button>
-                </div>
-
-                {selectedSegments.length === 0 ? (
-                  <p className="empty-route">No segment selected yet.</p>
-                ) : (
-                  <ol className="route-list">
-                    {selectedSegments.map((id) => {
-                      const segment = getSegmentById(id);
-
-                      return (
-                        <li key={id}>
-                          {segment.station1Name} ↔ {segment.station2Name}
-                        </li>
-                      );
-                    })}
-                  </ol>
-                )}
-
-                {error && (
-                  <div className="route-error">
-                    {error}
-                  </div>
-                )}
+                {error && <div className="route-error">{error}</div>}
 
                 <button
                   className="submit-route-button"
@@ -269,7 +263,7 @@ function GamePage() {
                 >
                   {submitting ? 'Submitting...' : 'Submit Route'}
                 </button>
-              </div>
+              </aside>
             </div>
           </div>
         </div>

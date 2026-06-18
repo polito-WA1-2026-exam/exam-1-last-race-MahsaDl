@@ -1,19 +1,11 @@
-function NetworkMap({ network, showLines, onStartPlanning }) {
-
-  if (!showLines) {
-    return (
-      <section className="game-map-card">
-        <h2>Stations</h2>
-
-        <div className="planning-stations">
-          {network.stations.map((station) => (
-            <span key={station.id}>{station.name}</span>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
+function NetworkMap({
+  network,
+  showLines,
+  onStartPlanning,
+  selectedSegments = [],
+  startStationName,
+  destinationStationName
+}) {
   const stationPos = {
     Centrale: { x: 120, y: 140 },
     'Porta Valeria': { x: 380, y: 140 },
@@ -39,6 +31,12 @@ function NetworkMap({ network, showLines, onStartPlanning }) {
     'Torre Cinerea'
   ];
 
+  const segmentColorByLine = {
+    red: '#ff6b6b',
+    blue: '#4da3ff',
+    green: '#2ecc71',
+    gold: '#f1c40f'
+  };
 
   function getStationColor(name) {
     if (['Crocevia del Falco'].includes(name)) return '#ff6b6b';
@@ -58,6 +56,100 @@ function NetworkMap({ network, showLines, onStartPlanning }) {
     return 'white';
   }
 
+  function getLineColor(lineId) {
+    const line = network.lines.find((item) => item.id === lineId);
+
+    return segmentColorByLine[line?.color] || '#5eead4';
+  }
+
+  function renderSegmentLine(segment, className = '') {
+    const station1 = stationPos[segment.station1Name];
+    const station2 = stationPos[segment.station2Name];
+
+    if (!station1 || !station2) {
+      return null;
+    }
+
+    return (
+      <line
+        key={segment.id}
+        x1={station1.x}
+        y1={station1.y}
+        x2={station2.x}
+        y2={station2.y}
+        stroke={getLineColor(segment.lineId)}
+        strokeWidth="10"
+        strokeLinecap="round"
+        className={className}
+      />
+    );
+  }
+
+  const selectedSegmentObjects = selectedSegments
+    .map((id) => network.segments.find((segment) => segment.id === id))
+    .filter(Boolean);
+
+  if (!showLines) {
+    return (
+      <section className="game-map-card">
+        <h2>Stations</h2>
+
+        <svg className="network-svg planning-network-svg" viewBox="60 120 940 680">       {selectedSegmentObjects.map((segment) =>
+          renderSegmentLine(segment, 'selected-route-line')
+        )}
+
+          {Object.entries(stationPos).map(([name, pos]) => {
+            const isStart = name === startStationName;
+            const isDestination = name === destinationStationName;
+
+            return (
+              <g key={name}>
+                <circle
+                  cx={pos.x}
+                  cy={pos.y}
+                  r={isStart || isDestination ? 26 : interchanges.includes(name) ? 22 : 18}
+                  className={
+                    isStart
+                      ? 'station-start'
+                      : isDestination
+                        ? 'station-destination'
+                        : interchanges.includes(name)
+                          ? 'station-interchange planning-station-muted'
+                          : 'station-node planning-station-muted'
+                  }
+                  style={
+                    !isStart && !isDestination && !interchanges.includes(name)
+                      ? { stroke: 'rgba(255, 255, 255, 0.35)' }
+                      : {}
+                  }
+                />
+
+                {(isStart || isDestination) && (
+                  <text
+                    x={pos.x}
+                    y={pos.y + 5}
+                    textAnchor="middle"
+                    className="station-marker-text"
+                  >
+                    {isStart ? 'START' : 'END'}
+                  </text>
+                )}
+
+                <text
+                  x={pos.x}
+                  y={pos.y - 34}
+                  textAnchor="middle"
+                  className="station-label"
+                >
+                  {name}
+                </text>
+              </g>
+            );
+          })}
+        </svg>
+      </section>
+    );
+  }
 
   return (
     <div className="setup-layout">
@@ -67,29 +159,8 @@ function NetworkMap({ network, showLines, onStartPlanning }) {
           <h3>NETWORK MAP</h3>
         </div>
 
-        <svg
-          className="network-svg"
-          viewBox="0 0 1000 800"
-        >
-          {/* RED */}
-          <line x1="120" y1="140" x2="380" y2="140" stroke="#ff6b6b" strokeWidth="10" strokeLinecap="round" />
-          <line x1="380" y1="140" x2="640" y2="140" stroke="#ff6b6b" strokeWidth="10" strokeLinecap="round" />
-          <line x1="640" y1="140" x2="900" y2="140" stroke="#ff6b6b" strokeWidth="10" strokeLinecap="round" />
-
-          {/* BLUE */}
-          <line x1="120" y1="140" x2="120" y2="340" stroke="#4da3ff" strokeWidth="10" strokeLinecap="round" />
-          <line x1="120" y1="340" x2="380" y2="340" stroke="#4da3ff" strokeWidth="10" strokeLinecap="round" />
-          <line x1="380" y1="340" x2="380" y2="540" stroke="#4da3ff" strokeWidth="10" strokeLinecap="round" />
-
-          {/* GREEN */}
-          <line x1="380" y1="140" x2="640" y2="340" stroke="#2ecc71" strokeWidth="10" strokeLinecap="round" />
-          <line x1="640" y1="340" x2="640" y2="540" stroke="#2ecc71" strokeWidth="10" strokeLinecap="round" />
-          <line x1="640" y1="540" x2="900" y2="540" stroke="#2ecc71" strokeWidth="10" strokeLinecap="round" />
-
-          {/* YELLOW */}
-          <line x1="900" y1="140" x2="900" y2="340" stroke="#f1c40f" strokeWidth="10" strokeLinecap="round" />
-          <line x1="900" y1="340" x2="640" y2="540" stroke="#f1c40f" strokeWidth="10" strokeLinecap="round" />
-          <line x1="640" y1="540" x2="640" y2="720" stroke="#f1c40f" strokeWidth="10" strokeLinecap="round" />
+        <svg className="network-svg" viewBox="0 0 1000 800">
+          {network.segments.map((segment) => renderSegmentLine(segment))}
 
           {Object.entries(stationPos).map(([name, pos]) => (
             <g key={name}>
@@ -134,12 +205,7 @@ function NetworkMap({ network, showLines, onStartPlanning }) {
             <span
               className="legend-color"
               style={{
-                background: {
-                  red: '#ff6b6b',
-                  blue: '#4da3ff',
-                  green: '#2ecc71',
-                  gold: '#f1c40f'
-                }[line.color]
+                background: segmentColorByLine[line.color]
               }}
             />
             {line.name}

@@ -162,7 +162,7 @@ function ResultPage() {
 
         <div className="result-actions">
           <Button as={Link} to="/game" className="result-play-button">
-            ▶ Play Again
+            Play Again
           </Button>
 
           <Button as={Link} to="/ranking" className="result-outline-button">

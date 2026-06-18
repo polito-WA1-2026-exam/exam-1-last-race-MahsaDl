@@ -1815,3 +1815,23 @@ body:has(.setup-layout) {
   opacity: 0.4;
   cursor: default;
 }
+
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  justify-content: center;
+  gap: 72px;
+  margin-top: 24px;
+}
+
+.result-stats>div {
+  text-align: center;
+}
+
+.result-route {
+  text-align: center;
+}
+
+.result-route p {
+  text-align: center;
+}

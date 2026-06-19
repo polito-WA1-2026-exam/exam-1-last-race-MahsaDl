@@ -104,7 +104,7 @@ function HomePage() {
                 <span>planning time</span>
               </div>
 
-              <div>
+              <div className="home-minimum-segments">
                 <strong>3+</strong>
                 <span>minimum segments</span>
               </div>

@@ -6,6 +6,7 @@ import useAuth from './hooks/useAuth.js';
 
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import NavigationBar from './components/NavigationBar.jsx';
+import ScrollToTop from './components/ScrollToTop';
 
 import HomePage from './pages/HomePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
@@ -25,6 +26,7 @@ function AppContent() {
 
   return (
     <>
+      <ScrollToTop />
       {!hideNavbar && <NavigationBar />}
 
       <Container fluid className="p-0">

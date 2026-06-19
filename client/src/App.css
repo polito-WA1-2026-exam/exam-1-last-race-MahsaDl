@@ -1943,3 +1943,7 @@ body:has(.setup-layout) {
   position: static;
   align-items: center;
 }
+
+.home-minimum-segments {
+  margin-left: 8px;
+}

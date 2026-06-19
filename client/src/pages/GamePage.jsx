@@ -51,6 +51,7 @@ function GamePage() {
 
 
   function startPlanning() {
+    window.scrollTo(0, 0);
     setError('');
     setSelectedSegments([]);
     setSubmitted(false);

@@ -24,7 +24,7 @@ function LoginPage() {
       await login(username, password);
       navigate('/');
     } catch (err) {
-      setError(err.message);
+      setError('Invalid username or password.');
     } finally {
       setSubmitting(false);
     }
